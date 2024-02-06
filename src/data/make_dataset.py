@@ -24,7 +24,7 @@ def get_Xs_ys(url :str, y_col :str) -> pd.DataFrame:
     """
 
     raw = (pd
-           .read_csv(url)
+           .read_csv(url, index_col=0)
            )
     
     return train_test_split(raw.drop(columns=[y_col]), raw[y_col],

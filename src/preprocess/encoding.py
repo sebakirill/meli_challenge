@@ -9,13 +9,15 @@ class FrequencyEncoder(BaseEstimator, TransformerMixin):
 
     Parameters
     ----------
-    cols : list
-        List of column names to be frequency encoded.
+
 
     Attributes
     ----------
     mapping : dict
         Mapping of category values to their frequencies for each column.
+        
+    cols : list
+        List of column names to be frequency encoded.
 
     Methods
     -------
@@ -25,8 +27,8 @@ class FrequencyEncoder(BaseEstimator, TransformerMixin):
         Transform the DataFrame by applying frequency encoding.
     """
 
-    def __init__(self, cols):
-        self.cols = cols
+    def __init__(self):
+        self.cols = None
         self.mapping = {}
 
     def fit(self, X: pd.DataFrame, y=None):
@@ -44,6 +46,7 @@ class FrequencyEncoder(BaseEstimator, TransformerMixin):
         self
             Returns the current instance of the transformer.
         """
+        self.cols = X.select_dtypes('category')
         for col in self.cols:
             freq_mapping = X[col].value_counts(normalize=True).to_dict()
             self.mapping[col] = freq_mapping

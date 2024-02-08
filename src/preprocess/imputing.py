@@ -86,10 +86,10 @@ def drop_na():
     Pipeline
         Pipeline with the DropNaTransformer.
     """
-    feature_engineering = Pipeline([
+    drop_na = Pipeline([
         ('drop_na', DropNaTransformer())
     ])
-    return feature_engineering
+    return drop_na
 
 def simple_imputer():
     """Create a pipeline for simple imputation of null values.

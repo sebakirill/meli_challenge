@@ -107,6 +107,7 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
                 .assign(**{c:lambda df_, c=c:df_[c].astype('float32') for c in X.select_dtypes('float64')},
                         **{c:lambda df_, c=c:df_[c].astype('int32') for c in X.select_dtypes('int64')},
                         **{c:lambda df_, c=c:df_[c].astype('category') for c in X.select_dtypes('object')}
-                        )  
+                        )
+                .drop(columns= ['SIT_SITE_ID', 'PHOTO_DATE'])  
                 )
     

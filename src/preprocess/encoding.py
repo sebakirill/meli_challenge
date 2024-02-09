@@ -47,7 +47,7 @@ class FrequencyEncoder(BaseEstimator, TransformerMixin):
             Returns the current instance of the transformer.
         """
         self.cols = (X
-                     .select_dtypes('category')
+                     .select_dtypes('object')
                      .columns)
         self.mapping = X[self.cols].apply(lambda col: col.value_counts(normalize=True).to_dict())
         return self
@@ -68,7 +68,6 @@ class FrequencyEncoder(BaseEstimator, TransformerMixin):
             Transformed DataFrame with categorical variables encoded.
         """
         return (X
-                .drop(columns=self.cols)
                 .assign(**{col : lambda df, col=col:df[col].map(self.mapping[col]) for col in self.cols})
                 )
             

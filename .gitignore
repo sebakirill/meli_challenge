@@ -18,3 +18,4 @@ __pycache__/
 # Archivos de configuración específicos del sistema
 .DS_Store
 Thumbs.db
+.egg_info

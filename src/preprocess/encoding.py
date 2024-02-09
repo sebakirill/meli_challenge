@@ -68,7 +68,6 @@ class FrequencyEncoder(BaseEstimator, TransformerMixin):
             Transformed DataFrame with categorical variables encoded.
         """
         return (X
-                .drop(columns=self.cols)
                 .assign(**{col : lambda df, col=col:df[col].map(self.mapping[col]) for col in self.cols})
                 )
             

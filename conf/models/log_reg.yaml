@@ -1,0 +1,10 @@
+name: Logistic Regression
+type:
+  _target_: train_model.log_reg
+  params:
+    C:
+      low: .001
+      high: 100
+    fit_intercept: [false, true]
+    solver: [lbfgs, sag]
+data: 1

@@ -1,0 +1,8 @@
+default:
+  models: xgb_clas
+
+
+n_trials: 4
+
+
+

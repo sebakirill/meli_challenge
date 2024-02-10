@@ -1,4 +1,0 @@
-name: get_Xs_ys
-type:
-  _target_: main.get_Xs_ys
-  y_col: OBJETIVO

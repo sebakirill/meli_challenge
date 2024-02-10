@@ -1,6 +1,0 @@
-name: extract_zip
-type:
-  _target_: main.extract_zip
-  url:
-  dst: ../../data/sample_HVA_DS_Beauty.zip
-  member_name: ../../data/raw/sample_HVA_DS_Beauty.csv

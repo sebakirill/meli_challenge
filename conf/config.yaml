@@ -1,7 +1,7 @@
-default:
-  models: xgb_clas
-
-
+defaults:
+  - _self_
+  - data/get_Xs_ys: get_data
+  - data/extract_zip: extract_zip
 n_trials: 4
 
 

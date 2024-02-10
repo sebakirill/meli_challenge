@@ -100,13 +100,12 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         Returns
         -------
         pd.DataFrame
-            The DataFrame with reduced memory usage.
+            The DataFrame with reduced memory usage.j  
         """
         
         return (X
                 .assign(**{c:lambda df_, c=c:df_[c].astype('float32') for c in X.select_dtypes('float64').columns},
                         **{c:lambda df_, c=c:df_[c].astype('int32') for c in X.select_dtypes('int64').columns},
-                        **{c:lambda df_, c=c:df_[c].astype('category') for c in X.select_dtypes('object').columns}
                         )
                 .drop(columns= ['SIT_SITE_ID', 'PHOTO_DATE'])  
                 )

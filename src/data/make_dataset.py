@@ -3,19 +3,27 @@ import zipfile
 import urllib
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.model_selection import train_test_split
+from typing import Tuple
 
 
-def extract_zip(src, dst, member_name):
-    """Extract a member file from a zip file and read it into a pandas
-    DataFrame.
-    Parameters:
-    src (str): URL of the zip file to be downloaded and extracted.
-    dst (str): Local file path where the zip file will be written.
-    member_name (str): Name of the member file inside the zip file
-    to be read into a DataFrame.
-    Returns:
-    pandas.DataFrame: DataFrame containing the contents of the
-    member file.
+def extract_zip(src: str, dst: str, member_name: str) -> pd.DataFrame:
+    """Extract a member file from a zip file and read it into a pandas DataFrame.
+
+    Parameters
+    ----------
+    src : str
+        URL of the zip file to be downloaded and extracted.
+
+    dst : str
+        Local file path where the zip file will be written.
+
+    member_name : str
+        Name of the member file inside the zip file to be read into a DataFrame.
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame containing the contents of the member file.
     """
     
     data = urllib.request.urlopen(src).read()
@@ -26,7 +34,7 @@ def extract_zip(src, dst, member_name):
         return raw
 
 
-def get_Xs_ys(url :str, y_col :str) -> pd.DataFrame:
+def get_Xs_ys(url: str, y_col: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """Load data from a CSV file, preprocess it, and split it into features and target variables.
 
     This function reads a CSV file from the given URL and then splits the data into features (X) 
@@ -46,9 +54,7 @@ def get_Xs_ys(url :str, y_col :str) -> pd.DataFrame:
         A tuple containing X_train, X_test, y_train, and y_test.
     """
 
-    raw = (pd
-           .read_csv(url, index_col=0)
-           )
+    raw = pd.read_csv(url, index_col=0)
     
     return train_test_split(raw.drop(columns=[y_col]), raw[y_col],
                             test_size=0.2, random_state=42, stratify=raw[y_col])
@@ -73,13 +79,13 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         The target column in the DataFrame.
     """
 
-    def __init__(self, ycol=None, feature_selection=False, col_selection=None):
+    def __init__(self, ycol: str = None, feature_selection: bool = False, col_selection: str = None, col: str = None):
         self.feature_selection = feature_selection
         self.ycol = ycol
         self.col_selection = col_selection
-        self.col = None
+        self.col = col
 
-    def transform(self, X):
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """Transform the input DataFrame to reduce memory usage.
 
         Parameters
@@ -97,7 +103,7 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         else:
             return self._reduce_memory_usage(X, col=self.col)
     
-    def fit(self, X, y=None):
+    def fit(self, X: pd.DataFrame, y=None) -> 'ReduceMemoryUsageTransformer':
         """Fit the transformer.
 
         Parameters
@@ -115,7 +121,7 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         """
         return self
 
-    def _reduce_memory_usage(self, X: pd.DataFrame, col) -> pd.DataFrame:
+    def _reduce_memory_usage(self, X: pd.DataFrame, col: str) -> pd.DataFrame:
         """Reduce memory usage by changing the data types of variables.
 
         This function takes a pandas DataFrame as input and attempts to reduce
@@ -137,4 +143,5 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
                         )
                 .drop(columns= col)  
                 )
+
     

@@ -21,18 +21,18 @@ def train_model(cfg: DictConfig):
     pipe_feature_selection.fit(X_train,y_train)
     hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection)
 
-    pipe_preprocess = Pipeline([
-        ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
-        ("imputer", hydra.utils.call(cfg.prerocess.encoding.type)),
-        ("encoding", hydra.utils.instantiate(cfg.preprocess.imputing.type))
-    ])
+    # pipe_preprocess = Pipeline([
+    #     ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
+    #     ("imputer", hydra.utils.call(cfg.prerocess.encoding.type)),
+    #     ("encoding", hydra.utils.instantiate(cfg.preprocess.imputing.type))
+    # ])
 
-    pipe_model = Pipeline([
-        ("pipe_prep", pipe_preprocess),
-        ("model", hydra.utils.call(cfg.models.type))
-    ])
+    # pipe_model = Pipeline([
+    #     ("pipe_prep", pipe_preprocess),
+    #     ("model", hydra.utils.call(cfg.models.type))
+    # ])
 
-    pipe_model.fit(X_train, y_train)
+    # pipe_model.fit(X_train, y_train)
     
 if __name__ == "__main__":
     train_model()

@@ -6,5 +6,4 @@ type:
       low: .001
       high: 100
     fit_intercept: [false, true]
-    solver: [lbfgs, sag]
-data: 1
+    solver: ['lbfgs', 'sag']

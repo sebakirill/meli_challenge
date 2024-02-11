@@ -1,0 +1,5 @@
+name: Feature Selection By XGBoost
+type:
+  _target_: main.pipe_feature_selection
+  objective: 'binary:logistic'
+  enable_categorical: True

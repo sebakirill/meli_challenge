@@ -2,6 +2,7 @@ defaults:
   - _self_
   - data/get_Xs_ys: get_data
   - data/extract_zip: extract_zip
+  - feature_selection: feature_selection
 n_trials: 4
 
 

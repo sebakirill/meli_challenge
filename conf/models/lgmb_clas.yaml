@@ -18,7 +18,7 @@ type:
       low: 0.6
       high: 1.0
       step: 0.1
-    objective: binary
+    objective: 'binary'
     is_unbalance: true
     n_jobs: -1
     random_state: 123
@@ -34,4 +34,3 @@ type:
       low: 0.1
       high: 1
       q: 0.1
-data: 1

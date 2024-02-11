@@ -1,0 +1,5 @@
+name: Simple Imputer
+type:
+  _target_: main.simple_imputer
+  imputation_num: [mean, median]
+  imputation_cat: [frequent, missing]

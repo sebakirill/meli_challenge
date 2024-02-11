@@ -6,7 +6,7 @@ from src.preprocess.imputing import simple_imputer
 from src.preprocess.encoding import freq_encoder
 
 
-def pipe_feature_selection() -> Pipeline:
+def pipe_feature_selection(objective, enable_categorical) -> Pipeline:
     """
     Create a pipeline for feature selection using XGBoost.
 
@@ -28,7 +28,7 @@ def pipe_feature_selection() -> Pipeline:
             ("freq_encoder", freq_encoder()),
             (
                 "xgb_class",
-                XGBClassifier(objective="binary:logistic", enable_categorical=True),
+                XGBClassifier(objective=objective, enable_categorical=enable_categorical),
             ),
         ]
     )

@@ -35,7 +35,7 @@ def extract_zip(url: str, dst: str, member_name: str) -> pd.DataFrame:
         raw = pd.read_csv(z.open(member_name), index_col=0)
         return raw
 
-def get_Xs_ys(url: str, y_col: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+def get_Xs_ys(url: str, y_col: str, dst: str, member_name: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """Load data from a CSV file, preprocess it, and split it into features and target variables.
 
     This function reads a CSV file from the given URL and then splits the data into features (X) 
@@ -44,10 +44,16 @@ def get_Xs_ys(url: str, y_col: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Seri
     Parameters
     ----------
     url : str
-        The URL or file path to the CSV file.
+        The URL of the zip file containing the CSV file.
 
     y_col : str
         The name of the target column in the DataFrame.
+
+    dst : str
+        Local directory where the zip file will be saved and extracted.
+
+    member_name : str
+        Name of the CSV file inside the zip file to be read.
 
     Returns
     -------
@@ -55,7 +61,7 @@ def get_Xs_ys(url: str, y_col: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Seri
         A tuple containing X_train, X_test, y_train, and y_test.
     """
 
-    raw = pd.read_csv(url, index_col=0)
+    raw = extract_zip(url=url, dst=dst, member_name=member_name)
     
     return train_test_split(raw.drop(columns=[y_col]), raw[y_col],
                             test_size=0.2, random_state=42, stratify=raw[y_col])

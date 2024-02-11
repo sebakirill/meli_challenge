@@ -1,4 +1,6 @@
 import pandas as pd
+import yaml
+
 
 def correlation_matrix(X: pd.DataFrame, y: pd.Series, meth:  str = 'spearman'):
     """Generate a correlation matrix with dummy variables and apply styling.
@@ -51,3 +53,39 @@ def check_first_buy(df: pd.DataFrame):
             .groupby('CUST_ID')
             .agg({'OBJETIVO': 'sum'})
             .loc[lambda x: x['OBJETIVO'] > 2])
+
+def class_weight(df: pd.Series, url_files: list[str]) -> None:
+    """Override class weight parameters for two models in YAML configuration files.
+
+    This function calculates the class weights based on the provided DataFrame
+    containing binary labels and updates the YAML configuration files for two models
+    with these weights.
+
+    Parameters:
+    -----------
+    df : pd.Series
+        Series containing binary labels for calculating class weights.
+
+    url_files : list[str]
+        List of file paths to the YAML configuration files of the models.
+
+    Returns:
+    --------
+    None
+        This function does not return any value. It updates the YAML configuration
+        files in place with the calculated class weights.
+    """
+    val = df.value_counts()
+    for i, url_file in enumerate(url_files, start=1):
+        with open(url_file, "r") as yaml_file:
+            config = yaml.safe_load(yaml_file)
+
+        # Update the configuration with the selected columns
+        if i == 1:
+            config["type"]["scale_pos_weight"] = val[0] / val[1]
+        else:
+            config["type"]["class_weight"] = {0: val[0], 1: val[1]}
+
+        # Save the updated configuration to the output YAML file
+        with open(url_file, "w") as file:
+            yaml.dump(config, file)

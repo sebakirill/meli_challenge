@@ -1,0 +1,5 @@
+name: Reduce Memory Usage
+type:
+  _target_: main.ReduceMemoryUsageTransformer
+  feature_selection: True
+  col_selection:

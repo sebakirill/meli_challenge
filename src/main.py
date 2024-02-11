@@ -21,7 +21,7 @@ def train_model(cfg: DictConfig):
     pipe_feature_selection.fit(X_train,y_train)
     
     pipe_preprocess = Pipeline([
-        ("reduce_memory", ReduceMemoryUsageTransformer()),
+        ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
         ("imputer", hydra.utils.call(cfg.prerocess.encoding.type)),
         ("encoding", hydra.utils.instantiate(cfg.preprocess.imputing.type))
     ])

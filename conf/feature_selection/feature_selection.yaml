@@ -3,3 +3,6 @@ type:
   _target_: main.pipe_feature_selection
   objective: 'binary:logistic'
   enable_categorical: True
+  col:
+    - "PHOTO_DATE"
+    - "SIT_SITE_ID"

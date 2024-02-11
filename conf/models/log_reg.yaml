@@ -7,3 +7,4 @@ type:
       high: 100
     fit_intercept: [false, true]
     solver: ['lbfgs', 'sag']
+    class_weight: 1

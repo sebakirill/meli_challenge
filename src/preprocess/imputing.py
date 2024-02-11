@@ -77,19 +77,7 @@ class DropNaTransformer(BaseEstimator, TransformerMixin):
                                          .gt(self.th)
                                          ]
         return self
-
-def drop_na():
-    """Create a pipeline for dropping columns with null values.
-
-    Returns
-    -------
-    Pipeline
-        Pipeline with the DropNaTransformer.
-    """
-    drop_na = Pipeline([
-        ('drop_na', DropNaTransformer())
-    ])
-    return drop_na
+    
 
 def simple_imputer():
     """Create a pipeline for simple imputation of null values.

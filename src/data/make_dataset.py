@@ -73,8 +73,11 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         The target column in the DataFrame.
     """
 
-    def __init__(self, ycol=None):
+    def __init__(self, ycol=None, feature_selection=False, col_selection=None):
+        self.feature_selection = feature_selection
         self.ycol = ycol
+        self.col_selection = col_selection
+        self.col = None
 
     def transform(self, X):
         """Transform the input DataFrame to reduce memory usage.
@@ -89,7 +92,10 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         pd.DataFrame
             The transformed DataFrame with reduced memory usage.
         """
-        return self._reduce_memory_usage(X)
+        if self.feature_selection:
+            return self._reduce_memory_usage(X, col=self.col_selection)
+        else:
+            return self._reduce_memory_usage(X, col=self.col)
     
     def fit(self, X, y=None):
         """Fit the transformer.
@@ -109,7 +115,7 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         """
         return self
 
-    def _reduce_memory_usage(self, X: pd.DataFrame) -> pd.DataFrame:
+    def _reduce_memory_usage(self, X: pd.DataFrame, col) -> pd.DataFrame:
         """Reduce memory usage by changing the data types of variables.
 
         This function takes a pandas DataFrame as input and attempts to reduce
@@ -123,13 +129,12 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         Returns
         -------
         pd.DataFrame
-            The DataFrame with reduced memory usage.j  
+            The DataFrame with reduced memory usage.  
         """
-        
         return (X
                 .assign(**{c:lambda df_, c=c:df_[c].astype('float32') for c in X.select_dtypes('float64').columns},
                         **{c:lambda df_, c=c:df_[c].astype('int32') for c in X.select_dtypes('int64').columns},
                         )
-                .drop(columns= ['SIT_SITE_ID', 'PHOTO_DATE'])  
+                .drop(columns= col)  
                 )
     

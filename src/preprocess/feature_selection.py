@@ -51,8 +51,7 @@ def pipe_feature_selection(
 
 def save_selected_columns(
     pipeline: Pipeline,
-    output_file: str,
-    input_file: str,
+    url_file: str,
     th: int = 0
 ) -> None:
     """
@@ -64,11 +63,8 @@ def save_selected_columns(
     pipeline : Pipeline
         Trained pipeline containing a feature selection step.
 
-    output_file : str
-        Path to the output YAML file where the selected columns will be saved.
-
-    input_file : str
-        Path to the input YAML file from which the pipeline configuration will be loaded.
+    url_file : str
+        Path to the YAML file where the selected columns will be updated.
 
     th : int, default=0
         Threshold for selecting features based on their importance. Only features with
@@ -86,7 +82,7 @@ def save_selected_columns(
     from this step.
     """
     # Load pipeline configuration from input YAML file
-    with open(input_file, "r") as yaml_file:
+    with open(url_file, "r") as yaml_file:
         config = yaml.safe_load(yaml_file)
 
     # Extract feature names with importance greater than the threshold
@@ -103,5 +99,5 @@ def save_selected_columns(
     config["type"]["col_selec"] = selected_columns
 
     # Save the updated configuration to the output YAML file
-    with open(output_file, "w") as file:
+    with open(url_file, "w") as file:
         yaml.dump(config, file)

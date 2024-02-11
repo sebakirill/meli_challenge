@@ -2,6 +2,6 @@ name: class_weight
 type:
   _target_: main.class_weight
   url_files: 
-    - '${hydra:runtime.cwd}/conf/models/xgb_clas.yaml'
-    - '${hydra:runtime.cwd}/conf/models/log_reg.yaml'
-    - '${hydra:runtime.cwd}/conf/models/rad_for.yaml'
+    - '${hydra:runtime.cwd}/../conf/models/xgb_clas.yaml'
+    - '${hydra:runtime.cwd}/../conf/models/log_reg.yaml'
+    - '${hydra:runtime.cwd}/../conf/models/rad_for.yaml'

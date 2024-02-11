@@ -1,9 +1,15 @@
 name: Logistic Regression
 type:
-  _target_: train_model.log_reg
   C:
-    low: .001
     high: 100
-  fit_intercept: [False, True]
-  solver: ['lbfgs', 'sag']
-  class_weight: 1
+    low: 0.001
+  _target_: train_model.log_reg
+  class_weight:
+    0: 158165
+    1: 1835
+  fit_intercept:
+  - false
+  - true
+  solver:
+  - lbfgs
+  - sag

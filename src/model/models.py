@@ -4,12 +4,13 @@ from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 
 
-def log_reg(C, fit_intercept, solver, random_state, trial=None):
+def log_reg(C, fit_intercept, solver, random_state, class_weight, trial=None):
     return LogisticRegression(
         C=trial.suggest_loguniform("C", **C),
         fit_intercept=trial.suggest_categorical("fit_intercept", fit_intercept),
         solver=trial.suggest_categorical("solver", solver),
         random_state=trial.suggest_int("random_state", **random_state),
+        class_weight=trial.suggest_int("class_weight", class_weight)
     )
 
 
@@ -20,6 +21,7 @@ def random_forest(
     bootstrap,
     random_state,
     n_jobs,
+    class_weight,
     trial=None,
 ):
     return RandomForestClassifier(
@@ -31,6 +33,7 @@ def random_forest(
         n_jobs=trial.suggest_int("n_jobs", **n_jobs),
         random_state=trial.suggest_int("random_state", **random_state),
         bootstrap=trial.suggest_categorical("bootstrap", **bootstrap),
+        class_weight=trial.suggest_int("class_weight", class_weight)
     )
 
 

@@ -2,4 +2,6 @@ name: get_Xs_ys
 type:
   _target_: main.get_Xs_ys
   y_col: OBJETIVO
-  url: '${hydra:runtime.cwd}/data/raw/sample_HVA_DS_Beauty.csv'
+  url: 'https://github.com/sebakirill/meli_challenge/blob/develop/data/sample_HVA_DS_Beauty.zip'
+  dst: '${hydra:runtime.cwd}/data/sample_HVA_DS_Beauty.zip'
+  member_name: 'sample_HVA_DS_Beauty.csv'

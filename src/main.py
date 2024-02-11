@@ -19,24 +19,24 @@ from src.preprocess.feature_selection import (
 def train_model(cfg: DictConfig):
     # hydra.utils.call(cfg.data.extract_zip.type)
     X_train, X_test, y_train, y_test = hydra.utils.call(cfg.data.get_Xs_ys.type)
-    pipe_feature_selection = hydra.utils.call(cfg.feature_selection.type)
-    pipe_feature_selection.fit(X_train,y_train)
-    hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection)
+    # pipe_feature_selection = hydra.utils.call(cfg.feature_selection.type)
+    # pipe_feature_selection.fit(X_train,y_train)
+    # hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection)
 
 
-    def optimize_model(trial):
-        preprocess_pipe = Pipeline([
-            ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
-            ("imputer", hydra.utils.call(cfg.prerocess.encoding.type, trial=trial)),
-            ("encoding", hydra.utils.instantiate(cfg.preprocess.imputing.type, trial=trial))
-        ])
-        model_pipe = Pipeline([
-            ("pipe_prep", preprocess_pipe),
-            ("model", hydra.utils.call(cfg.models.type, trial=trial))
-        ])
-        model_pipe.fit(X_train,y_train)
-        y_pred = model_pipe.predict(X_test)
-        return accuracy_score(y_test, y_pred)
+    # def optimize_model(trial):
+    #     preprocess_pipe = Pipeline([
+    #         ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
+    #         ("imputer", hydra.utils.call(cfg.prerocess.encoding.type, trial=trial)),
+    #         ("encoding", hydra.utils.instantiate(cfg.preprocess.imputing.type, trial=trial))
+    #     ])
+    #     model_pipe = Pipeline([
+    #         ("pipe_prep", preprocess_pipe),
+    #         ("model", hydra.utils.call(cfg.models.type, trial=trial))
+    #     ])
+    #     model_pipe.fit(X_train,y_train)
+    #     y_pred = model_pipe.predict(X_test)
+    #     return accuracy_score(y_test, y_pred)
 
 
 

@@ -3,6 +3,8 @@ type:
   _target_: main.pipe_feature_selection
   objective: 'binary:logistic'
   enable_categorical: True
+  imputation_num: mean
+  imputation_cat: frequent
   col:
     - "PHOTO_DATE"
     - "SIT_SITE_ID"

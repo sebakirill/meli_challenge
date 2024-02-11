@@ -3,7 +3,7 @@ from sklearn.pipeline import Pipeline
 import yaml
 from src.data.make_dataset import ReduceMemoryUsageTransformer
 from src.preprocess.imputing import simple_imputer
-from src.preprocess.encoding import freq_encoder
+from src.preprocess.encoding import FrequencyEncoder
 
 
 def pipe_feature_selection() -> Pipeline:
@@ -25,7 +25,7 @@ def pipe_feature_selection() -> Pipeline:
         [
             ("reduce_memory", ReduceMemoryUsageTransformer()),
             ("simple_imputer", simple_imputer()),
-            ("freq_encoder", freq_encoder()),
+            ("freq_encoder", FrequencyEncoder()),
             (
                 "xgb_class",
                 XGBClassifier(objective="binary:logistic", enable_categorical=True),

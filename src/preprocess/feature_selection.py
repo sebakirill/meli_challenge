@@ -96,7 +96,7 @@ def save_selected_columns(
             pipeline.named_steps["xgb_class"].get_booster().feature_names,
             pipeline.named_steps["xgb_class"].feature_importances_,
         )
-        if importance > th
+        if importance <= th
     ]
 
     # Update the configuration with the selected columns

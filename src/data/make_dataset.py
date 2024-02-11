@@ -1,17 +1,17 @@
 import pandas as pd
 import zipfile
-import urllib
+import requests
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.model_selection import train_test_split
 from typing import Tuple
 
 
-def extract_zip(src: str, dst: str, member_name: str) -> pd.DataFrame:
+def extract_zip(url: str, dst: str, member_name: str) -> pd.DataFrame:
     """Extract a member file from a zip file and read it into a pandas DataFrame.
 
     Parameters
     ----------
-    src : str
+    url : str
         URL of the zip file to be downloaded and extracted.
 
     dst : str
@@ -25,14 +25,15 @@ def extract_zip(src: str, dst: str, member_name: str) -> pd.DataFrame:
     pandas.DataFrame
         DataFrame containing the contents of the member file.
     """
+    response = requests.get(url)
+    response.raise_for_status()  # Raise an exception for non-200 status codes
     
-    data = urllib.request.urlopen(src).read()
     with open(dst, mode='wb') as fout:
-        fout.write(data)
+        fout.write(response.content)
+    
     with zipfile.ZipFile(dst) as z:
         raw = pd.read_csv(z.open(member_name), index_col=0)
         return raw
-
 
 def get_Xs_ys(url: str, y_col: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """Load data from a CSV file, preprocess it, and split it into features and target variables.

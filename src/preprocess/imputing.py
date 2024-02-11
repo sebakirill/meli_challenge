@@ -91,7 +91,7 @@ def drop_na():
     ])
     return drop_na
 
-def simple_imputer():
+def simple_imputer(imputation_num, imputation_cat, trial=None):
     """Create a pipeline for simple imputation of null values.
 
     Returns
@@ -100,7 +100,11 @@ def simple_imputer():
         Pipeline with the CategoricalImputer and MeanMedianImputer.
     """
     simple_imputer = Pipeline([
-        ('imp_cat', CategoricalImputer()),
-        ('imp_num', MeanMedianImputer())
+        ('imp_cat', CategoricalImputer(
+            imputation_method=trial.suggest_categorical("imp_cat", imputation_num)
+            )),
+        ('imp_num', MeanMedianImputer(
+            imputation_method=trial.suggest_categorical("imp_num", imputation_cat)
+            ))
     ])
     return simple_imputer

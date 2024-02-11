@@ -89,8 +89,8 @@ def save_selected_columns(
     selected_columns = [
         col
         for col, importance in zip(
-            pipeline.named_steps["xgb_class"].feature_names_in_,
-            pipeline.named_steps["xgb_class"],
+            pipeline.named_steps["xgb_class"].get_booster().feature_names,
+            pipeline.named_steps["xgb_class"].feature_importances_,
         )
         if importance > th
     ]

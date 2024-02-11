@@ -9,6 +9,8 @@ from src.preprocess.encoding import FrequencyEncoder
 def pipe_feature_selection(
     objective: str,
     enable_categorical: bool,
+    imputation_num: str,
+    imputation_cat: str,
     col: List[str]
 ) -> Pipeline:
     """
@@ -39,7 +41,9 @@ def pipe_feature_selection(
     pipe_feature_selection = Pipeline(
         [
             ("reduce_memory", ReduceMemoryUsageTransformer(col=col)),
-            ("simple_imputer", simple_imputer()),
+            (
+                "simple_imputer", 
+                simple_imputer(imputation_num=imputation_num, imputation_cat=imputation_cat)),
             ("freq_encoder", FrequencyEncoder()),
             (
                 "xgb_class",

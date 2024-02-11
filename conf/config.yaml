@@ -1,7 +1,8 @@
 defaults:
   - _self_
   - data/get_Xs_ys: get_data
-  - data/reduce_memory_usage : reduce_memory_usage
+  - data/reduce_memory_usage: reduce_memory_usage
+  - data/class_weight: class_weight
   - feature_selection: feature_selection
   - save_selected_columns: save_selected_columns
 n_trials: 4

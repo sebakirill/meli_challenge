@@ -1,12 +1,16 @@
 from xgboost import XGBClassifier
 from sklearn.pipeline import Pipeline
 import yaml
+from typing import List
 from src.data.make_dataset import ReduceMemoryUsageTransformer
 from src.preprocess.imputing import simple_imputer
 from src.preprocess.encoding import FrequencyEncoder
 
-
-def pipe_feature_selection() -> Pipeline:
+def pipe_feature_selection(
+    objective: str,
+    enable_categorical: bool,
+    col: List[str]
+) -> Pipeline:
     """
     Create a pipeline for feature selection using XGBoost.
 
@@ -16,6 +20,17 @@ def pipe_feature_selection() -> Pipeline:
     - Simple imputation
     - XGBoost feature selection
 
+    Parameters
+    ----------
+    objective : str
+        The objective function for XGBoost.
+
+    enable_categorical : bool
+        Whether to enable categorical features for XGBoost.
+
+    col : List[str]
+        List of columns to be considered during feature selection.
+
     Returns
     -------
     Pipeline
@@ -23,18 +38,23 @@ def pipe_feature_selection() -> Pipeline:
     """
     pipe_feature_selection = Pipeline(
         [
-            ("reduce_memory", ReduceMemoryUsageTransformer()),
+            ("reduce_memory", ReduceMemoryUsageTransformer(col=col)),
             ("simple_imputer", simple_imputer()),
             ("freq_encoder", FrequencyEncoder()),
             (
                 "xgb_class",
-                XGBClassifier(objective="binary:logistic", enable_categorical=True),
+                XGBClassifier(objective=objective, enable_categorical=enable_categorical),
             ),
         ]
     )
     return pipe_feature_selection
 
-def save_selected_columns(pipeline: Pipeline, output_file: str, input_file: str, th: int = 0):
+def save_selected_columns(
+    pipeline: Pipeline,
+    output_file: str,
+    input_file: str,
+    th: int = 0
+) -> None:
     """
     Extracts columns with feature importance greater than a given threshold from a trained pipeline
     and saves them to a YAML file.
@@ -85,4 +105,3 @@ def save_selected_columns(pipeline: Pipeline, output_file: str, input_file: str,
     # Save the updated configuration to the output YAML file
     with open(output_file, "w") as file:
         yaml.dump(config, file)
-

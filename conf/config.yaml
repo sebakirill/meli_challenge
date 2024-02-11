@@ -4,6 +4,7 @@ defaults:
   - data/extract_zip: extract_zip
   - data/reduce_memory_usage : reduce_memory_usage
   - feature_selection: feature_selection
+  - save_selected_columns: save_selected_columns
 n_trials: 4
 
 

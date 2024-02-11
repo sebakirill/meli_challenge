@@ -19,7 +19,8 @@ def train_model(cfg: DictConfig):
     X_train, X_test, y_train, y_test = hydra.utils.call(cfg.data.get_Xs_ys.type)
     pipe_feature_selection = hydra.utils.call(cfg.feature_selection.type)
     pipe_feature_selection.fit(X_train,y_train)
-    
+    hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection)
+
     pipe_preprocess = Pipeline([
         ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
         ("imputer", hydra.utils.call(cfg.prerocess.encoding.type)),

@@ -1,0 +1,5 @@
+name: save_selected_columns
+type:
+  _target_: main.save_selected_columns
+  url_file: '${hydra:runtime.cwd}/../conf/data/reduce_memory_usage/reduce_memory_usage.yaml'
+  th: 0

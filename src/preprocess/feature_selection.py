@@ -57,6 +57,6 @@ def save_selected_columns(pipeline, output_file, th: int = 0):
         )
         if importance > th
     ]
-
+    data = {"selected_columns", selected_columns}
     with open(output_file, "w") as file:
-        yaml.dump(selected_columns, file)
+        yaml.dump(data, file)

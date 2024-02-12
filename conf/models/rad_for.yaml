@@ -1,4 +1,4 @@
-name: Random Forest
+name: random_forest
 type:
   _target_: main.random_forest
   class_weight: ['balanced', 'balanced_subsample']

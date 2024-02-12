@@ -1,4 +1,4 @@
-import pandas as pd
+import os
 import yaml
 import optuna
 from optuna.samplers import TPESampler
@@ -30,6 +30,7 @@ def train_model(cfg: DictConfig):
     def optimize_model(trial):
         
         memory_pipe = hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)
+        
         preprocess_pipe= ColumnTransformer(
             transformers=[
                 ('cat', Pipeline([
@@ -40,6 +41,7 @@ def train_model(cfg: DictConfig):
                     ("imputing", hydra.utils.call(cfg.preprocess.imputing.num_imputer.type, trial=trial)), 
                 ]), memory_pipe.fit_transform(X_train).select_dtypes('number').columns),
             ])
+        
         model_pipe = Pipeline([
             ("pipe_prep", memory_pipe),
             ("pipe_end", preprocess_pipe),
@@ -48,16 +50,25 @@ def train_model(cfg: DictConfig):
         
         model_pipe.fit(X_train,y_train)
         y_pred = model_pipe.predict(X_test)
+        
         return roc_auc_score(y_test, y_pred)
     
     sampler = TPESampler(seed=123)
     study = optuna.create_study(sampler = sampler, direction="maximize")
     study.optimize(optimize_model, n_trials=cfg.n_trials)
 
-    print(f'El mejor accuracy conseguido fue: {study.best_value}')
+    print(f'El mejor roc_auc_score conseguido fue: {study.best_value}')
     print(f'usando los siguientes parámetros: \n \t \t{study.best_params}')
-    with open('/Users/sebastian/Proyects/meli_challenge/best_params.yaml', "w") as file:
-        yaml.dump(study.best_params, file)
     
+    file_path = hydra.utils.to_absolute_path(f'../conf/best_hiperparameters/{cfg.models.name}_{cfg.preprocess.encoding.name}.yaml')
+
+    try:
+        with open(file_path, "w") as file:
+            yaml.dump(study.best_params, file)
+    except FileNotFoundError:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "w") as file:
+            yaml.dump(study.best_params, file)
+        
 if __name__ == "__main__":
     train_model()

@@ -1,4 +1,4 @@
-name: Logistic Regression
+name: logistic_regression
 type:
   C:
     high: 100

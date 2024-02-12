@@ -1,4 +1,4 @@
-name: LightGBM Classifier
+name: lightgbm
 type:
   _target_: main.lightgmb_mod
   colsample_bytree:

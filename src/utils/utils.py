@@ -82,7 +82,9 @@ def class_weight(df: pd.Series, url_files: list[str]) -> None:
 
         # Update the configuration with the selected columns
         if i == 1:
-            config["type"]["scale_pos_weight"] = round(val[0] / val[1],2).item()
+            config["type"]["scale_pos_weight"]["high"] = round(val[0] / val[1],2).item()
+            config["type"]["scale_pos_weight"]["low"] = round(val[0] / val[1],2).item()
+            config["type"]["scale_pos_weight"]["step"] = 0
         else:
             config["type"]["class_weight"] = {0: val[0].item(), 1: val[1].item()}
 

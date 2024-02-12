@@ -2,7 +2,7 @@ import pandas as pd
 import yaml
 
 
-def correlation_matrix(X: pd.DataFrame, y: pd.Series, meth:  str = 'spearman'):
+def correlation_matrix(X: pd.DataFrame, y: pd.Series, meth: str = "spearman"):
     """Generate a correlation matrix with dummy variables and apply styling.
 
     Parameters
@@ -11,7 +11,7 @@ def correlation_matrix(X: pd.DataFrame, y: pd.Series, meth:  str = 'spearman'):
         DataFrame with independent variables.
     y : pd.Series
         Series with the dependent variable.
-    meth : str, optional 
+    meth : str, optional
            Method of corr.
 
     Returns
@@ -21,15 +21,16 @@ def correlation_matrix(X: pd.DataFrame, y: pd.Series, meth:  str = 'spearman'):
     """
 
     df = pd.concat([X, y], axis=1)
-    cat_cols = df.select_dtypes('category').columns
+    cat_cols = df.select_dtypes("category").columns
     if not cat_cols.empty:
         df = pd.get_dummies(df, columns=cat_cols)
 
-    return (df.corr(method=meth)
-            .style
-            .background_gradient(cmap='RdBu', vmax=1, vmin=-1)
-            .set_sticky(axis='index')
-            )
+    return (
+        df.corr(method=meth)
+        .style.background_gradient(cmap="RdBu", vmax=1, vmin=-1)
+        .set_sticky(axis="index")
+    )
+
 
 def check_first_buy(df: pd.DataFrame):
     """Check if any customer has made more than one purchase.
@@ -49,25 +50,25 @@ def check_first_buy(df: pd.DataFrame):
     pd.DataFrame
         DataFrame containing rows where a customer has made more than one purchase.
     """
-    return (df
-            .groupby('CUST_ID')
-            .agg({'OBJETIVO': 'sum'})
-            .loc[lambda x: x['OBJETIVO'] > 2])
+    return (
+        df.groupby("CUST_ID").agg({"OBJETIVO": "sum"}).loc[lambda x: x["OBJETIVO"] > 2]
+    )
 
-def class_weight(df: pd.Series, url_files: list[str]) -> None:
+
+def class_weight(df: pd.Series, url_file: str) -> None:
     """Override class weight parameters for two models in YAML configuration files.
 
     This function calculates the class weights based on the provided DataFrame
-    containing binary labels and updates the YAML configuration files for two models
-    with these weights.
+    containing binary labels and updates the YAML configuration files for two XGBoost
+    model.
 
     Parameters:
     -----------
     df : pd.Series
         Series containing binary labels for calculating class weights.
 
-    url_files : list[str]
-        List of file paths to the YAML configuration files of the models.
+    url_files :
+        File paths to the YAML configuration files of the models.
 
     Returns:
     --------
@@ -75,19 +76,10 @@ def class_weight(df: pd.Series, url_files: list[str]) -> None:
         This function does not return any value. It updates the YAML configuration
         files in place with the calculated class weights.
     """
+
     val = df.value_counts()
-    for i, url_file in enumerate(url_files, start=1):
-        with open(url_file, "r") as yaml_file:
-            config = yaml.safe_load(yaml_file)
-
-        # Update the configuration with the selected columns
-        if i == 1:
-            config["type"]["scale_pos_weight"]["high"] = round(val[0] / val[1],2).item()
-            config["type"]["scale_pos_weight"]["low"] = round(val[0] / val[1],2).item()
-            config["type"]["scale_pos_weight"]["step"] = 0
-        else:
-            config["type"]["class_weight"] = {0: val[0].item(), 1: val[1].item()}
-
-        # Save the updated configuration to the output YAML file
-        with open(url_file, "w") as file:
-            yaml.dump(config, file)
+    with open(url_file, "r") as yaml_file:
+        config = yaml.safe_load(yaml_file)
+        config["type"]["scale_pos_weight"] = round(val[0] / val[1], 2).item()
+    with open(url_file, "w") as file:
+        yaml.dump(config, file)

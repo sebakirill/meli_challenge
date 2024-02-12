@@ -78,7 +78,7 @@ class DropNaTransformer(BaseEstimator, TransformerMixin):
                                          ]
         return self
 
-def drop_na():
+def drop_na(trial=None):
     """Create a pipeline for dropping columns with null values.
 
     Returns
@@ -101,10 +101,10 @@ def simple_imputer(imputation_num, imputation_cat, trial=None):
     """
     simple_imputer = Pipeline([
         ('imp_cat', CategoricalImputer(
-            imputation_method=trial.suggest_categorical("imp_cat", imputation_num)
+            imputation_method=trial.suggest_categorical("imp_cat", imputation_cat)
             )),
         ('imp_num', MeanMedianImputer(
-            imputation_method=trial.suggest_categorical("imp_num", imputation_cat)
+            imputation_method=trial.suggest_categorical("imp_num", imputation_num)
             ))
     ])
     return simple_imputer

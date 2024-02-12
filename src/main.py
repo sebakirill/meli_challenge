@@ -15,7 +15,7 @@ from src.preprocess.feature_selection import (
     pipe_feature_selection,
     save_selected_columns,
 )
-
+from src.model.models import log_reg, random_forest, xgboost_mod, lightgmb_mod 
 
 
 @hydra.main(config_path="../conf", config_name="config", version_base="1.3")
@@ -25,12 +25,11 @@ def train_model(cfg: DictConfig):
     pipe_feature_selection = hydra.utils.call(cfg.feature_selection.type)
     pipe_feature_selection.fit(X_train,y_train)
     hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection)
-
-
+    
     def optimize_model(trial):
         preprocess_pipe = Pipeline([
             ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
-            ("imputing", hydra.utils.call(cfg.preprocess.imputing.type)),
+            ("imputing", hydra.utils.call(cfg.preprocess.imputing.type, trial=trial)),
             ("encoding", hydra.utils.instantiate(cfg.preprocess.encoding.type))
         ])
         model_pipe = Pipeline([

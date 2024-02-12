@@ -59,9 +59,9 @@ def xgboost_mod(
         colsample_bytree=trial.suggest_discrete_uniform(
             "colsample_bytree", **colsample_bytree
         ),
-        scale_pos_weight=trial.suggest_int("scale_pos_weight", scale_pos_weight),
-        n_jobs=trial.suggest_int("n_jobs", n_jobs),
-        random_state=trial.suggest_int("random_state", random_state),
+        scale_pos_weight=trial.suggest_int("scale_pos_weight", **scale_pos_weight),
+        n_jobs=n_jobs,
+        random_state=trial.suggest_int("random_state", **random_state),
         n_estimators=trial.suggest_int("n_estimators", **n_estimators),
         max_depth=trial.suggest_int("max_depth", **max_depth),
         min_samples_split=trial.suggest_discrete_uniform(

@@ -4,9 +4,7 @@ type:
     high: 100
     low: 0.001
   _target_: main.log_reg
-  class_weight:
-  - 86.19
-  - 1
+  class_weight: 'balanced'
   fit_intercept:
   - false
   - true

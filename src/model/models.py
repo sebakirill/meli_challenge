@@ -6,8 +6,8 @@ from xgboost import XGBClassifier
 
 def log_reg(C, class_weight, fit_intercept, solver, random_state, trial=None):
     return LogisticRegression(
-        C=trial.suggest_loguniform("C", **C),
-        class_weight=trial.suggest_int("class_weight", class_weight),
+        C=trial.suggest_float("C", **C, log=True),
+        class_weight=class_weight,
         fit_intercept=trial.suggest_categorical("fit_intercept", fit_intercept),
         solver=trial.suggest_categorical("solver", solver),
         random_state=random_state

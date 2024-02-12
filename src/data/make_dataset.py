@@ -89,7 +89,7 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, ycol: str = None, feature_selection: bool = False, col_selec: str = None, col: str = None):
         self.feature_selection = feature_selection
         self.ycol = ycol
-        self.col_selection = col_selec
+        self.col_selec = col_selec
         self.col = col
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -106,7 +106,7 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
             The transformed DataFrame with reduced memory usage.
         """
         if self.feature_selection:
-            return self._reduce_memory_usage(X, col=self.col_selection)
+            return self._reduce_memory_usage(X, col=self.col_selec)
         else:
             return self._reduce_memory_usage(X, col=self.col)
     

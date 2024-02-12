@@ -86,10 +86,10 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
         The target column in the DataFrame.
     """
 
-    def __init__(self, ycol: str = None, feature_selection: bool = False, col_selection: str = None, col: str = None):
+    def __init__(self, ycol: str = None, feature_selection: bool = False, col_selec: str = None, col: str = None):
         self.feature_selection = feature_selection
         self.ycol = ycol
-        self.col_selection = col_selection
+        self.col_selection = col_selec
         self.col = col
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:

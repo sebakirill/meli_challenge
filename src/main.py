@@ -29,21 +29,24 @@ def train_model(cfg: DictConfig):
     
     def optimize_model(trial):
         
-        preprocess_pipe = Pipeline([
+        memory_pipe = Pipeline([
             ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
-            ("imputing", hydra.utils.call(cfg.preprocess.imputing.type, trial=trial)),
         ])
         
-        endocing_pipe= ColumnTransformer(
+        preprocess_pipe= ColumnTransformer(
             transformers=[
                 ('cat', Pipeline([
+                    ("imputing", hydra.utils.call(cfg.preprocess.imputing.type, trial=trial)),
                     ("encoding", hydra.utils.instantiate(cfg.preprocess.encoding.type)), 
-                ]), preprocess_pipe.fit_transform(X_train).select_dtypes('object').columns),
+                ]), memory_pipe.fit_transform(X_train).select_dtypes('object').columns),
+                ('num', Pipeline([
+                    ("imputing", hydra.utils.call(cfg.preprocess.imputing.type, trial=trial)), 
+                ]), memory_pipe.fit_transform(X_train).select_dtypes('number').columns),
             ])
         
         model_pipe = Pipeline([
-            ("pipe_prep", preprocess_pipe),
-            ("pipe_end", endocing_pipe),
+            ("pipe_prep", memory_pipe),
+            ("pipe_end", preprocess_pipe),
             ("model", hydra.utils.call(cfg.models.type, trial=trial))
         ])
         

@@ -1,12 +1,7 @@
 name: Random Forest
 type:
   _target_: main.random_forest
-  bootstrap:
-  - true
-  - false
-  class_weight:
-    '0': 158165
-    '1': 1835
+  class_weight: ['balanced', 'balanced_subsample']
   max_depth:
     high: 10
     low: 1

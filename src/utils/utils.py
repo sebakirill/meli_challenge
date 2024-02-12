@@ -84,7 +84,7 @@ def class_weight(df: pd.Series, url_files: list[str]) -> None:
         if i == 1:
             config["type"]["scale_pos_weight"] = round(val[0] / val[1],2).item()
         else:
-            config["type"]["class_weight"] = {'0': val[0].item(), '1': val[1].item()}
+            config["type"]["class_weight"] = [round(val[0] / val[1],2).item(), 1]
 
         # Save the updated configuration to the output YAML file
         with open(url_file, "w") as file:

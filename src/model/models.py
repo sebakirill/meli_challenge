@@ -15,7 +15,6 @@ def log_reg(C, class_weight, fit_intercept, solver, random_state, trial=None):
 
 
 def random_forest(
-    bootstrap,
     class_weight,
     max_depth,
     min_samples_leaf,
@@ -26,10 +25,9 @@ def random_forest(
     trial=None,
 ):
     return RandomForestClassifier(
-        bootstrap=trial.suggest_categorical("bootstrap", **bootstrap),
-        class_weight=class_weight,
+        class_weight=trial.suggest_categorical("class_weight", class_weight),
         max_depth=trial.suggest_int("max_depth", **max_depth),
-        min_samples_leaf=trial.suggest_init("min_samples_split", **min_samples_leaf),
+        min_samples_leaf=trial.suggest_int("min_samples_leaf", **min_samples_leaf),
         min_samples_split=trial.suggest_discrete_uniform(
             "min_samples_split", **min_samples_split
         ),

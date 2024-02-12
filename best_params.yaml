@@ -1,9 +1,5 @@
-colsample_bytree: 0.9
-imp_cat: frequent
-imp_num: median
-learning_rate: 0.26
-max_depth: 4
-min_child_weight: 19
-min_samples_split: 0.5
-n_estimators: 70
-subsample: 0.8
+class_weight: balanced
+max_depth: 5
+min_samples_leaf: 8
+min_samples_split: 0.4
+n_estimators: 440

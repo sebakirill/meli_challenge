@@ -29,3 +29,39 @@ type:
     high: 1.0
     low: 0.6
     step: 0.1
+  num_leaves:
+    high: 50
+    low: 10
+    step: 5
+  reg_alpha:
+    high: 1.0
+    low: 0.0
+    step: 0.1
+  reg_lambda:
+    high: 1.0
+    low: 0.0
+    step: 0.1
+  min_child_samples:
+    high: 50
+    low: 5
+    step: 5
+  subsample_freq:
+    high: 5
+    low: 0
+    step: 1
+  bagging_fraction:
+    high: 1.0
+    low: 0.5
+    step: 0.1
+  bagging_freq:
+    high: 5
+    low: 1
+    step: 1
+  feature_fraction:
+    high: 1.0
+    low: 0.5
+    step: 0.1
+  feature_fraction_bynode:
+    high: 1.0
+    low: 0.5
+    step: 0.1

@@ -184,6 +184,15 @@ def lightgmb_mod(
     objective,
     random_state,
     subsample,
+    num_leaves,
+    reg_alpha,
+    reg_lambda,
+    min_child_samples,
+    subsample_freq,
+    bagging_fraction,
+    bagging_freq,
+    feature_fraction,
+    feature_fraction_bynode,
     trial=None,
 ) -> LGBMClassifier:
     """
@@ -192,22 +201,22 @@ def lightgmb_mod(
     Parameters
     ----------
     colsample_bytree : dict
-        Dictionary containing parameters for the column subsampling rate of trees.
+        Parameters for the column subsampling rate of trees.
 
     is_unbalance : bool
         Whether to use the unbalanced label.
 
     learning_rate : dict
-        Dictionary containing parameters for the learning rate.
+        Parameters for the learning rate.
 
     max_depth : dict
-        Dictionary containing parameters for the maximum depth of the tree.
+        Parameters for the maximum depth of the tree.
 
     min_child_weight : dict
-        Dictionary containing parameters for the minimum sum of instance weight needed in a child.
+        Parameters for the minimum sum of instance weight needed in a child.
 
     n_estimators : dict
-        Dictionary containing parameters for the number of boosting rounds.
+        Parameters for the number of boosting rounds.
 
     n_jobs : int
         Number of parallel threads used to run LightGBM.
@@ -219,7 +228,7 @@ def lightgmb_mod(
         Seed for random number generation.
 
     subsample : dict
-        Dictionary containing parameters for the subsample ratio of training instances.
+        Parameters for the subsample ratio of training instances.
 
     trial : optuna.trial.Trial, optional
         An optuna trial object for hyperparameter optimization.
@@ -240,4 +249,13 @@ def lightgmb_mod(
         objective=objective,
         random_state=random_state,
         subsample=trial.suggest_float("subsample", **subsample),
+        num_leaves=trial.suggest_float("num_leaves", **num_leaves),
+        reg_alpha=trial.suggest_float("reg_alpha", **reg_alpha),
+        reg_lambda=trial.suggest_float("reg_lambda", **reg_lambda),
+        min_child_samples=trial.suggest_float("min_child_samples", **min_child_samples),
+        subsample_freq=trial.suggest_float("subsample_freq", **subsample_freq),
+        bagging_fraction=trial.suggest_float("bagging_fraction", **bagging_fraction),
+        bagging_freq=trial.suggest_float("bagging_freq", **bagging_freq),
+        feature_fraction=trial.suggest_float("feature_fraction", **feature_fraction),
+        feature_fraction_bynode=trial.suggest_float("feature_fraction_bynode", **feature_fraction_bynode),
     )

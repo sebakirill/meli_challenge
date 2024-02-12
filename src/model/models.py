@@ -108,7 +108,6 @@ def xgboost_mod(
     random_state,
     n_estimators,
     max_depth,
-    min_samples_split,
     trial=None,
 ) -> XGBClassifier:
     """
@@ -146,9 +145,6 @@ def xgboost_mod(
     max_depth : dict
         Dictionary containing parameters for the maximum depth of the tree.
 
-    min_samples_split : dict
-        Dictionary containing parameters for the minimum number of samples required to split an internal node.
-
     trial : optuna.trial.Trial, optional
         An optuna trial object for hyperparameter optimization.
 
@@ -168,7 +164,6 @@ def xgboost_mod(
         random_state=random_state,
         n_estimators=trial.suggest_int("n_estimators", **n_estimators),
         max_depth=trial.suggest_int("max_depth", **max_depth),
-        min_samples_split=trial.suggest_float("min_samples_split", **min_samples_split),
         objective=objective,
     )
 

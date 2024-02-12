@@ -3,7 +3,7 @@ from sklearn.pipeline import Pipeline
 import yaml
 from typing import List
 from src.data.make_dataset import ReduceMemoryUsageTransformer
-from src.preprocess.imputing import simple_imputer
+from feature_engine.imputation import CategoricalImputer, MeanMedianImputer
 from src.preprocess.encoding import FrequencyEncoder
 
 def pipe_feature_selection(
@@ -41,9 +41,8 @@ def pipe_feature_selection(
     pipe_feature_selection = Pipeline(
         [
             ("reduce_memory", ReduceMemoryUsageTransformer(col=col)),
-            (
-                "simple_imputer", 
-                simple_imputer(imputation_num=imputation_num, imputation_cat=imputation_cat)),
+            ('imp_cat', CategoricalImputer(imputation_cat)),
+            ('imp_num', MeanMedianImputer(imputation_num)),
             ("freq_encoder", FrequencyEncoder()),
             (
                 "xgb_class",

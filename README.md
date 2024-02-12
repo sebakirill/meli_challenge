@@ -57,6 +57,7 @@ pip install -r requirements.txt
 ```bash 
 python main.py  -m +models=lgbm_clas,xgb_clas,rad_for,log_reg +preprocess.encoding=freq_encoder,one_hot_encoder 
 ```
+5. Before executing the notebook, make sure to run Step 4 to train the models with the best hyperparameters.
 
 
 

@@ -47,9 +47,15 @@ meli_challenge/
 
 ## Execution
 1. Clone this repository to your local machine.
-2. Install the necessary dependencies using ```bash pip install -r requirements.txt. ```
+2. Install the necessary dependencies using 
+```bash 
+pip install -r requirements.txt 
+```
 3. Adjust the model configuration in the /conf directory as needed.
-4. Multirun with hydra ```bash python main.py  -m +models=lgbm_clas,xgb_clas,rad_for,log_reg +preprocess.encoding=freq_encoder,one_hot_encoder ```
+4. Multirun with hydra 
+```bash 
+python main.py  -m +models=lgbm_clas,xgb_clas,rad_for,log_reg +preprocess.encoding=freq_encoder,one_hot_encoder 
+```
 
 
 

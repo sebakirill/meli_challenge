@@ -5,6 +5,8 @@ defaults:
   - data/class_weight: class_weight
   - feature_selection: feature_selection
   - save_selected_columns: save_selected_columns
+  - preprocess/imputing/cat_imputer: cat_imputer
+  - preprocess/imputing/num_imputer: num_imputer
 n_trials: 4
 
 

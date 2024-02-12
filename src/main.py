@@ -11,7 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 from src.utils.utils import class_weight
 from src.data.make_dataset import get_Xs_ys, ReduceMemoryUsageTransformer
 from src.preprocess.encoding import FrequencyEncoder
-from src.preprocess.imputing import drop_na, simple_imputer
+from src.preprocess.imputing import drop_na, cat_imputer, num_imputer
 from src.preprocess.feature_selection import (
     pipe_feature_selection,
     save_selected_columns,
@@ -36,11 +36,11 @@ def train_model(cfg: DictConfig):
         preprocess_pipe= ColumnTransformer(
             transformers=[
                 ('cat', Pipeline([
-                    ("imputing", hydra.utils.call(cfg.preprocess.imputing.type, trial=trial)),
+                    ("imputing", hydra.utils.call(cfg.preprocess.imputing.cat_imputer.type, trial=trial)),
                     ("encoding", hydra.utils.instantiate(cfg.preprocess.encoding.type)), 
                 ]), memory_pipe.fit_transform(X_train).select_dtypes('object').columns),
                 ('num', Pipeline([
-                    ("imputing", hydra.utils.call(cfg.preprocess.imputing.type, trial=trial)), 
+                    ("imputing", hydra.utils.call(cfg.preprocess.imputing.num_imputer.type, trial=trial)), 
                 ]), memory_pipe.fit_transform(X_train).select_dtypes('number').columns),
             ])
         

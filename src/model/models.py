@@ -233,6 +233,7 @@ def lightgmb_mod(
     LGBMClassifier
         A LightGBM classifier.
     """
+
     return LGBMClassifier(
         colsample_bytree=trial.suggest_float("colsample_bytree", **colsample_bytree),
         is_unbalance=is_unbalance,

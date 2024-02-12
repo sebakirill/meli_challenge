@@ -3,5 +3,5 @@ type:
   _target_: main.get_Xs_ys
   y_col: OBJETIVO
   url: 'https://github.com/sebakirill/meli_challenge/raw/develop/data/sample_HVA_DS_Beauty.zip'
-  dst: '${hydra:runtime.cwd}/data/sample_HVA_DS_Beauty.zip'
+  dst: '${hydra:runtime.cwd}/../data/sample_HVA_DS_Beauty.zip'
   member_name: 'raw/sample_HVA_DS_Beauty.csv'

@@ -9,8 +9,8 @@ import yaml
 from sklearn.preprocessing import OneHotEncoder
 from src.utils.utils import class_weight
 from src.data.make_dataset import get_Xs_ys, ReduceMemoryUsageTransformer
-from src.preprocess.imputing import simple_imputer, drop_na
 from src.preprocess.encoding import FrequencyEncoder
+from src.preprocess.imputing import drop_na, simple_imputer
 from src.preprocess.feature_selection import (
     pipe_feature_selection,
     save_selected_columns,
@@ -27,28 +27,28 @@ def train_model(cfg: DictConfig):
     hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection)
 
 
-    # def optimize_model(trial):
-    #     preprocess_pipe = Pipeline([
-    #         ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
-    #         ("imputer", hydra.utils.call(cfg.prerocess.encoding.type, trial=trial)),
-    #         ("encoding", hydra.utils.instantiate(cfg.preprocess.imputing.type, trial=trial))
-    #     ])
-    #     model_pipe = Pipeline([
-    #         ("pipe_prep", preprocess_pipe),
-    #         ("model", hydra.utils.call(cfg.models.type, trial=trial))
-    #     ])
-    #     model_pipe.fit(X_train,y_train)
-    #     y_pred = model_pipe.predict(X_test)
-    #     return roc_auc_score(y_test, y_pred)
+    def optimize_model(trial):
+        preprocess_pipe = Pipeline([
+            ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
+            ("imputing", hydra.utils.call(cfg.preprocess.imputing.type)),
+            ("encoding", hydra.utils.instantiate(cfg.preprocess.encoding.type))
+        ])
+        model_pipe = Pipeline([
+            ("pipe_prep", preprocess_pipe),
+            ("model", hydra.utils.call(cfg.models.type, trial=trial))
+        ])
+        model_pipe.fit(X_train,y_train)
+        y_pred = model_pipe.predict(X_test)
+        return roc_auc_score(y_test, y_pred)
     
-    # sampler = TPESampler(seed=123)
-    # study = optuna.create_study(sampler = sampler, direction="maximize")
-    # study.optimize(optimize_model, n_trials=cfg.n_trials)
+    sampler = TPESampler(seed=123)
+    study = optuna.create_study(sampler = sampler, direction="maximize")
+    study.optimize(optimize_model, n_trials=cfg.n_trials)
 
-    # print(f'El mejor accuracy conseguido fue: {study.best_value}')
-    # print(f'usando los siguientes parámetros: \n \t \t{study.best_params}')
-    # with open('/Users/sebastian/Proyects/meli_challenge/best_params.yaml', "w") as file:
-    #     yaml.dump(study.best_params, file)
+    print(f'El mejor accuracy conseguido fue: {study.best_value}')
+    print(f'usando los siguientes parámetros: \n \t \t{study.best_params}')
+    with open('/Users/sebastian/Proyects/meli_challenge/best_params.yaml', "w") as file:
+        yaml.dump(study.best_params, file)
     
 if __name__ == "__main__":
     train_model()

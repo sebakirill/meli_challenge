@@ -1,14 +1,13 @@
-import hydra
-from omegaconf import DictConfig
 import pandas as pd
+import yaml
 import optuna
 from optuna.samplers import TPESampler
+import hydra
+from omegaconf import DictConfig
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from sklearn.metrics import roc_auc_score
-import yaml
 from sklearn.preprocessing import OneHotEncoder
-from src.utils.utils import class_weight
+from sklearn.metrics import roc_auc_score
 from src.data.make_dataset import get_Xs_ys, ReduceMemoryUsageTransformer
 from src.preprocess.encoding import FrequencyEncoder
 from src.preprocess.imputing import cat_imputer, num_imputer
@@ -16,7 +15,8 @@ from src.preprocess.feature_selection import (
     pipe_feature_selection,
     save_selected_columns,
 )
-from src.model.models import log_reg, random_forest, xgboost_mod, lightgmb_mod 
+from src.utils.utils import class_weight
+from src.model.models import log_reg, random_forest, xgboost_mod, lightgmb_mod
 
 
 @hydra.main(config_path="../conf", config_name="config", version_base="1.3")
@@ -29,7 +29,7 @@ def train_model(cfg: DictConfig):
     
     def optimize_model(trial):
         
-        memory_pipe = hydra.utils.call(cfg.data.reduce_memory_usage.type)
+        memory_pipe = hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)
         preprocess_pipe= ColumnTransformer(
             transformers=[
                 ('cat', Pipeline([

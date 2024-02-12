@@ -1,6 +1,6 @@
 name: Reduce Memory Usage
 type:
-  _target_: main.reduce_memory_usage
+  _target_: main.ReduceMemoryUsageTransformer
   col_selec:
   - TPV__SUM__OP_COW_API_DOL__MTS__30
   - TPV__SUM__ON_DOL__MTS__30

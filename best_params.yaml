@@ -1,7 +1,8 @@
-class_weight: balanced
+colsample_bytree: 0.9
 imp_cat: missing
 imp_num: mean
+learning_rate: 0.060000000000000005
 max_depth: 4
-min_samples_leaf: 5
-min_samples_split: 0.30000000000000004
-n_estimators: 380
+min_child_weight: 5
+n_estimators: 180
+subsample: 0.9

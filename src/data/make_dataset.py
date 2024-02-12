@@ -153,14 +153,4 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
                 )
 
 
-def reduce_memory_usage() -> Pipeline:
-    """Create a pipeline with a ReduceMemoryUsageTransformer.
-
-    Returns
-    -------
-    Pipeline
-        Pipeline containing the ReduceMemoryUsageTransformer.
-    """
-    
-    return Pipeline([("reduce_memory", ReduceMemoryUsageTransformer())])
     

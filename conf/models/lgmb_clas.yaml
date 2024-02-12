@@ -1,6 +1,6 @@
 name: LightGBM Classifier
 type:
-  _target_: main.lightgbm_mod
+  _target_: main.lightgmb_mod
   colsample_bytree:
     high: 1.0
     low: 0.6

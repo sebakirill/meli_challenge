@@ -1,5 +1,4 @@
 name: class_weight
 type:
   _target_: main.class_weight
-  url_files: 
-    - '${hydra:runtime.cwd}/../conf/models/xgb_clas.yaml'
+  url_file: '${hydra:runtime.cwd}/../conf/models/xgb_clas.yaml'

@@ -1,0 +1,4 @@
+name: Numeric Imputer
+type:
+  _target_: main.num_imputer
+  imputation_num: [mean, median]

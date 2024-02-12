@@ -1,0 +1,4 @@
+name: Categorical Imputer
+type:
+  _target_: main.cat_imputer
+  imputation_cat: [frequent, missing]

@@ -1,0 +1,16 @@
+name: Logistic Regression
+type:
+  C:
+    high: 100
+    low: 0.001
+  _target_: main.log_reg
+  class_weight:
+  - 86.19
+  - 1
+  fit_intercept:
+  - false
+  - true
+  random_state: 123
+  solver:
+  - lbfgs
+  - sag

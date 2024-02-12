@@ -1,0 +1,5 @@
+class_weight: balanced
+max_depth: 5
+min_samples_leaf: 8
+min_samples_split: 0.4
+n_estimators: 440

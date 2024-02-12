@@ -1,0 +1,3 @@
+name: One Hot Encoder
+type:
+  _target_: main.OneHotEncoder

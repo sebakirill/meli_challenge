@@ -1,6 +1,7 @@
 import pandas as pd
 import zipfile
 import requests
+from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.model_selection import train_test_split
 from typing import Tuple
@@ -151,4 +152,15 @@ class ReduceMemoryUsageTransformer(BaseEstimator, TransformerMixin):
                 .drop(columns= col)  
                 )
 
+
+def reduce_memory_usage() -> Pipeline:
+    """Create a pipeline with a ReduceMemoryUsageTransformer.
+
+    Returns
+    -------
+    Pipeline
+        Pipeline containing the ReduceMemoryUsageTransformer.
+    """
+    
+    return Pipeline([("reduce_memory", ReduceMemoryUsageTransformer())])
     

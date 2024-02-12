@@ -18,10 +18,6 @@ type:
     high: 20
     low: 1
     step: 1
-  min_samples_split:
-    high: 1
-    low: 0.1
-    q: 0.1
   n_estimators:
     high: 600
     low: 10

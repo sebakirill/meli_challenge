@@ -13,3 +13,4 @@ type:
   solver:
   - lbfgs
   - sag
+  random_state: 123

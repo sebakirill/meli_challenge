@@ -5,8 +5,8 @@ type:
     low: 0.001
   _target_: main.log_reg
   class_weight:
-    0: 158165
-    1: 1835
+    '0': 158165
+    '1': 1835
   fit_intercept:
   - false
   - true

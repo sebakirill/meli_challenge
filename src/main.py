@@ -4,6 +4,7 @@ import pandas as pd
 import optuna
 from optuna.samplers import TPESampler
 from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
 from sklearn.metrics import roc_auc_score
 import yaml
 from sklearn.preprocessing import OneHotEncoder
@@ -27,15 +28,25 @@ def train_model(cfg: DictConfig):
     hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection)
     
     def optimize_model(trial):
+        
         preprocess_pipe = Pipeline([
             ("reduce_memory", hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)),
             ("imputing", hydra.utils.call(cfg.preprocess.imputing.type, trial=trial)),
-            ("encoding", hydra.utils.instantiate(cfg.preprocess.encoding.type))
         ])
+        
+        endocing_pipe= ColumnTransformer(
+            transformers=[
+                ('cat', Pipeline([
+                    ("encoding", hydra.utils.instantiate(cfg.preprocess.encoding.type)), 
+                ]), preprocess_pipe.fit_transform(X_train).select_dtypes('object').columns),
+            ])
+        
         model_pipe = Pipeline([
             ("pipe_prep", preprocess_pipe),
+            ("pipe_end", endocing_pipe),
             ("model", hydra.utils.call(cfg.models.type, trial=trial))
         ])
+        
         model_pipe.fit(X_train,y_train)
         y_pred = model_pipe.predict(X_test)
         return roc_auc_score(y_test, y_pred)

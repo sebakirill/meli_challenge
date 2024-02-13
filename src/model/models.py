@@ -1,4 +1,4 @@
-from typing import Callable, Dict, List, Optional
+from typing import Dict, List, Optional
 import optuna
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier

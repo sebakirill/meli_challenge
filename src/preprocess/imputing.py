@@ -2,7 +2,7 @@ from feature_engine.imputation import CategoricalImputer, MeanMedianImputer
 from sklearn.pipeline import Pipeline
 
 
-def num_imputer(imputation_num, trial=None):
+def num_imputer(imputation_num: str, trial=None) -> Pipeline:
     """Create a pipeline for simple imputation of null values.
 
     Returns
@@ -17,7 +17,7 @@ def num_imputer(imputation_num, trial=None):
     ])
     return num_imputer
 
-def cat_imputer(imputation_cat, trial=None):
+def cat_imputer(imputation_cat: str, trial=None) -> Pipeline:
     """Create a pipeline for categorical imputation of null values.
 
     Returns

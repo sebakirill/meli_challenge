@@ -1,3 +1,4 @@
+from typing import Dict
 import os
 import yaml
 import optuna
@@ -18,20 +19,42 @@ from src.preprocess.feature_selection import (
 from src.utils.utils import class_weight
 from src.model.models import log_reg, random_forest, xgboost_mod, lightgmb_mod
 
-
 @hydra.main(config_path="../conf", config_name="config", version_base="1.3")
-def train_model(cfg: DictConfig):
-    
+def train_model(cfg: DictConfig) -> None:
+    """
+    Train a machine learning model using Optuna for hyperparameter optimization.
+
+    Parameters
+    ----------
+    cfg : DictConfig
+        Configuration dictionary.
+
+    Returns
+    -------
+    None
+    """
     X_train, X_test, y_train, y_test = hydra.utils.call(cfg.data.get_Xs_ys.type)
     hydra.utils.call(cfg.data.class_weight.type, df=y_train)
     pipe_feature_selection = hydra.utils.call(cfg.feature_selection.type)
-    hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection.fit(X_train,y_train))
+    hydra.utils.call(cfg.save_selected_columns.type, pipeline=pipe_feature_selection.fit(X_train, y_train))
     
-    def optimize_model(trial):
-        
+    def optimize_model(trial: optuna.trial.Trial) -> float:
+        """
+        Optimize model hyperparameters.
+
+        Parameters
+        ----------
+        trial : optuna.trial.Trial
+            Optuna trial object for hyperparameter optimization.
+
+        Returns
+        -------
+        float
+            ROC AUC score.
+        """
         memory_pipe = hydra.utils.instantiate(cfg.data.reduce_memory_usage.type)
         
-        preprocess_pipe= ColumnTransformer(
+        preprocess_pipe = ColumnTransformer(
             transformers=[
                 ('cat', Pipeline([
                     ("imputing", hydra.utils.call(cfg.preprocess.imputing.cat_imputer.type, trial=trial)),
@@ -48,13 +71,13 @@ def train_model(cfg: DictConfig):
             ("model", hydra.utils.call(cfg.models.type, trial=trial))
         ])
         
-        model_pipe.fit(X_train,y_train)
+        model_pipe.fit(X_train, y_train)
         y_pred = model_pipe.predict(X_test)
         
         return roc_auc_score(y_test, y_pred)
     
     sampler = TPESampler(seed=123)
-    study = optuna.create_study(sampler = sampler, direction="maximize")
+    study = optuna.create_study(sampler=sampler, direction="maximize")
     study.optimize(optimize_model, n_trials=cfg.n_trials)
 
     print(f'El mejor roc_auc_score conseguido fue: {study.best_value}')
@@ -72,3 +95,4 @@ def train_model(cfg: DictConfig):
         
 if __name__ == "__main__":
     train_model()
+

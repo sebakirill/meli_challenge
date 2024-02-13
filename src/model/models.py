@@ -1,10 +1,19 @@
+from typing import Callable, Dict, List, Optional
+import optuna
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 
 
-def log_reg(C, class_weight, fit_intercept, solver, random_state, trial=None) -> LogisticRegression:
+def log_reg(
+    C: Dict,
+    class_weight: Optional[Dict[str, float]],
+    fit_intercept: List[bool],
+    solver: List[str],
+    random_state: int,
+    trial: Optional[optuna.trial.Trial] = None
+) -> LogisticRegression:
     """
     Create a Logistic Regression model.
 
@@ -13,13 +22,13 @@ def log_reg(C, class_weight, fit_intercept, solver, random_state, trial=None) ->
     C : dict
         Dictionary containing parameters for the regularization strength.
 
-    class_weight : dict, list, str, or None
+    class_weight : dict, optional
         Weights associated with classes in the form of a dictionary.
 
-    fit_intercept : list
+    fit_intercept : list of bool
         Whether to fit an intercept term.
 
-    solver : list
+    solver : list of str
         Algorithm to use in the optimization problem.
 
     random_state : int
@@ -43,21 +52,21 @@ def log_reg(C, class_weight, fit_intercept, solver, random_state, trial=None) ->
 
 
 def random_forest(
-    class_weight,
-    max_depth,
-    min_samples_leaf,
-    min_samples_split,
-    n_estimators,
-    n_jobs,
-    random_state,
-    trial=None,
+    class_weight: Optional[Dict[str, float]],
+    max_depth: Dict[str, int],
+    min_samples_leaf: Dict[str, int],
+    min_samples_split: Dict[str, int],
+    n_estimators: Dict[str, int],
+    n_jobs: int,
+    random_state: int,
+    trial: Optional[optuna.trial.Trial] = None
 ) -> RandomForestClassifier:
     """
     Create a Random Forest classifier.
 
     Parameters
     ----------
-    class_weight : dict, list, str, or None
+    class_weight : dict, optional
         Weights associated with classes in the form of a dictionary.
 
     max_depth : dict
@@ -98,17 +107,17 @@ def random_forest(
 
 
 def xgboost_mod(
-    learning_rate,
-    min_child_weight,
-    subsample,
-    colsample_bytree,
-    objective,
-    scale_pos_weight,
-    n_jobs,
-    random_state,
-    n_estimators,
-    max_depth,
-    trial=None,
+    learning_rate: Dict[str, float],
+    min_child_weight: Dict[str, int],
+    subsample: Dict[str, float],
+    colsample_bytree: Dict[str, float],
+    objective: str,
+    scale_pos_weight: float,
+    n_jobs: int,
+    random_state: int,
+    n_estimators: Dict[str, int],
+    max_depth: Dict[str, int],
+    trial: Optional[optuna.trial.Trial] = None
 ) -> XGBClassifier:
     """
     Create an XGBoost classifier.
@@ -169,26 +178,26 @@ def xgboost_mod(
 
 
 def lightgmb_mod(
-    colsample_bytree,
-    is_unbalance,
-    learning_rate,
-    max_depth,
-    min_child_weight,
-    n_estimators,
-    n_jobs,
-    objective,
-    random_state,
-    subsample,
-    num_leaves,
-    reg_alpha,
-    reg_lambda,
-    min_child_samples,
-    subsample_freq,
-    bagging_fraction,
-    bagging_freq,
-    feature_fraction,
-    feature_fraction_bynode,
-    trial=None,
+    colsample_bytree: Dict[str, float],
+    is_unbalance: bool,
+    learning_rate: Dict[str, float],
+    max_depth: Dict[str, int],
+    min_child_weight: Dict[str, int],
+    n_estimators: Dict[str, int],
+    n_jobs: int,
+    objective: str,
+    random_state: int,
+    subsample: Dict[str, float],
+    num_leaves: Dict[str, int],
+    reg_alpha: Dict[str, float],
+    reg_lambda: Dict[str, float],
+    min_child_samples: Dict[str, int],
+    subsample_freq: Dict[str, int],
+    bagging_fraction: Dict[str, float],
+    bagging_freq: Dict[str, int],
+    feature_fraction: Dict[str, float],
+    feature_fraction_bynode: Dict[str, float],
+    trial: Optional[optuna.trial.Trial] = None
 ) -> LGBMClassifier:
     """
     Create a LightGBM classifier.

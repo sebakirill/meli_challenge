@@ -23,4 +23,4 @@ Thumbs.db
 # Jobs and Trials 
 outputs/
 multirun/
-conf/best_hiperparameters
+conf/best_hiperparameters/*.yaml

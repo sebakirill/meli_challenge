@@ -38,6 +38,7 @@ meli_challenge/
 │   ├── models/
 │   ├── preprocess/
 │   ├── utils/
+│   ├── pipeline/
 │
 ├── utils/
 │
